@@ -1,1 +1,5 @@
-<p>team-view works!</p>,
+<div class="team-view-container">
+    <div *ngFor="let p of allPersons" class="person-card-container">
+        <app-person-card [currentPerson]="p"></app-person-card>
+    </div>
+</div>

@@ -1,0 +1,13 @@
+.task-short {
+  background-color: lightgreen;
+  font-weight: bold;
+}
+
+.task-medium {
+  background-color: lightblue;
+}
+
+.task-long {
+  background-color: lightcoral;
+  font-style: italic;
+}

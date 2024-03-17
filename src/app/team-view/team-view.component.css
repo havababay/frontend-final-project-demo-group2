@@ -1,3 +1,7 @@
-:host {
-  display: block;
+.team-view-container {
+  display: flex;
+}
+
+.person-card-container {
+  margin: 8px;
 }

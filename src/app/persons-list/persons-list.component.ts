@@ -19,7 +19,10 @@ import { DeletePersonDialogComponent } from '../delete-person-dialog/delete-pers
   styleUrl: './persons-list.component.css',
 })
 export class PersonsListComponent implements OnInit { 
-  constructor(private personService : PeronsService, private dialogService : MatDialog) {}
+  constructor(
+    private personService : PeronsService, 
+    private dialogService : MatDialog) {}
+  
   ngOnInit(): void {
     this.allPersons = this.personService.list();
   }

@@ -1,0 +1,33 @@
+<div>
+    <mat-form-field>
+        <mat-label>Tasks:</mat-label>
+        <mat-select [(ngModel)]="selectedTask">
+            <mat-option 
+                *ngFor="let task of allTasks"
+                [value]="task">
+            {{ task.name }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+</div>
+<div>
+    <div>
+        {{ selectedTask?.description }}
+    </div>
+    <div [ngClass]="getDurationStyle()">
+        {{ selectedTask?.duration }}
+    </div>
+</div>
+<div>
+    <button 
+        mat-raised-button 
+        color="primary"
+        (click)="createRandomTeam()">
+        Choose Random Team
+    </button>
+</div>
+<div>
+    <div *ngFor="let person of randomTeam">
+        <app-person-card [currentPerson]="person"></app-person-card>
+    </div>
+</div>
