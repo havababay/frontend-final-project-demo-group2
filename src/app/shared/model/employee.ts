@@ -12,7 +12,7 @@ export class Employee {
   }
 
   getFullName() {
-    let name = "hava";
+    const name = "hava";
     return this.name + " " + this.role;
   }
 }

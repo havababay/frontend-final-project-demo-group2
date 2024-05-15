@@ -37,7 +37,7 @@ export class PersonFormComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.id) {
-      let personFromService = this.personService.get(parseInt(this.id));
+      const personFromService = this.personService.get(parseInt(this.id));
 
       if (personFromService) {
         this.currentPerson = personFromService;

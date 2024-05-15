@@ -11,7 +11,7 @@ export class PeronsService {
   constructor() { }
 
   private getNextId() : number {
-    let nextIdString = localStorage.getItem(this.NEXT_ID_KEY);
+    const nextIdString = localStorage.getItem(this.NEXT_ID_KEY);
 
     return nextIdString ? parseInt(nextIdString) : 0;
   }
@@ -26,8 +26,8 @@ export class PeronsService {
   }
 
   private getPersons() : Map<number, Person> {
-    let personString = localStorage.getItem(this.PERSON_KEY);
-    let idToPerson = new Map<number, Person>();
+    const personString = localStorage.getItem(this.PERSON_KEY);
+    const idToPerson = new Map<number, Person>();
 
     if (personString) {
       JSON.parse(personString).forEach((person : Person) => {
@@ -51,7 +51,7 @@ export class PeronsService {
     let nextId = this.getNextId();
     newPersonData.id = nextId
 
-    let personsData = this.getPersons();
+    const personsData = this.getPersons();
     personsData.set(nextId, newPersonData);
     this.setPersons(personsData);
 
@@ -59,7 +59,7 @@ export class PeronsService {
   }
  
   update(existingPerson : Person) : void {
-    let personsData = this.getPersons();
+    const personsData = this.getPersons();
 
     if (personsData.has(existingPerson.id)) {
       personsData.set(existingPerson.id, existingPerson);
@@ -68,7 +68,7 @@ export class PeronsService {
   }
 
   delete(existingPersonId : number) : void {
-    let personsData = this.getPersons();
+    const personsData = this.getPersons();
 
     personsData.delete(existingPersonId);
     this.setPersons(personsData);

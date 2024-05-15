@@ -15,53 +15,57 @@ import { PersonCardComponent } from '../person-card/person-card.component';
   selector: 'app-task-assigmenet',
   standalone: true,
   imports: [
-    CommonModule, MatSelectModule, MatFormFieldModule, FormsModule,
-    MatButtonModule, PersonCardComponent
+    CommonModule,
+    MatSelectModule,
+    MatFormFieldModule,
+    FormsModule,
+    MatButtonModule,
+    PersonCardComponent,
   ],
   templateUrl: './task-assigmenet.component.html',
   styleUrl: './task-assigmenet.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TaskAssigmenetComponent implements OnInit { 
-  allTasks : HouseholdTask[] = [];
+export class TaskAssigmenetComponent implements OnInit {
+  allTasks: HouseholdTask[] = [];
   allPerson: Person[] = [];
-  randomTeam : Person[] = [];
+  randomTeam: Person[] = [];
 
-  selectedTask? : HouseholdTask;
+  selectedTask?: HouseholdTask;
 
   constructor(
-    private tasksService : TasksService,
-    private personService : PeronsService
-  ){}
+    private tasksService: TasksService,
+    private personService: PeronsService
+  ) {}
 
   ngOnInit(): void {
     this.allTasks = this.tasksService.list();
     this.allPerson = this.personService.list();
   }
 
-  getDurationStyle() : string {
+  getDurationStyle(): string {
     switch (this.selectedTask?.duration) {
       case TaskDuration.SHORT:
-        return "task-short";
+        return 'task-short';
       case TaskDuration.MEDIUM:
-        return "task-medium";
+        return 'task-medium';
       case TaskDuration.LONG:
-        return "task-long";
+        return 'task-long';
       default:
-        return "";
+        return '';
     }
   }
 
   createRandomTeam() {
-    this.randomTeam = []
-    
-    let tempPersons = [... this.allPerson];
+    this.randomTeam = [];
+
+    const tempPersons = [...this.allPerson];
     tempPersons.sort(() => Math.random() - 0.5);
-    
-    for(let i = 0 ; i < 4; ++i) {
+
+    for (let i = 0; i < 4; ++i) {
       this.randomTeam.push(tempPersons[i]);
     }
-    
+
     //this.randomTeam = tem
   }
 }
