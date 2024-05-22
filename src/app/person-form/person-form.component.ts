@@ -27,7 +27,7 @@ import { MatIconModule } from '@angular/material/icon';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PersonFormComponent implements OnInit { 
-  currentPerson: Person = new Person(0,'','','');
+  currentPerson: Person = new Person('','','','');
   @ViewChild('phoneGroup') phoneGroup? : NgModelGroup;
 
   @Input()
@@ -37,7 +37,7 @@ export class PersonFormComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.id) {
-      const personFromService = this.personService.get(parseInt(this.id));
+      const personFromService = this.personService.get(this.id);
 
       if (personFromService) {
         this.currentPerson = personFromService;
@@ -49,10 +49,12 @@ export class PersonFormComponent implements OnInit {
     console.log("Form submitted!");
     if (this.id) {
       this.personService.update(this.currentPerson);
+      this.router.navigate(['']);
     } else {
-      this.personService.add(this.currentPerson)
+      this.personService.add(this.currentPerson).then(
+        () => this.router.navigate([''])
+      );
     }
-    this.router.navigate(['']);
   }
 
   addPhoneNumber() {

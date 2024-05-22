@@ -24,19 +24,23 @@ export class PersonsListComponent implements OnInit {
     private dialogService : MatDialog) {}
   
   ngOnInit(): void {
-    this.allPersons = this.personService.list();
+    this.personService.list().then(
+      (result : Person[]) => this.allPersons = result
+    );
   }
 
   allPersons : Person[] = [];
   displayedColumns = ['fullName', 'email', 'actions'];
 
-  deletePerson(id: number, fullName : string) {
+  deletePerson(id: string, fullName : string) {
     const dialogRef = this.dialogService.open(DeletePersonDialogComponent,{data: fullName,});
 
     dialogRef.afterClosed().subscribe(deletionResult => {
         if (deletionResult) {
           this.personService.delete(id);
-          this.allPersons = this.personService.list();
+          this.personService.list().then(
+            (result : Person[]) => this.allPersons = result
+          );
         }
       }
     );

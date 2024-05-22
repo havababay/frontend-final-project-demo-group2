@@ -40,7 +40,9 @@ export class TaskAssigmenetComponent implements OnInit {
 
   ngOnInit(): void {
     this.allTasks = this.tasksService.list();
-    this.allPerson = this.personService.list();
+    this.personService.list().then(
+      (result : Person[]) => this.allPerson = result
+    );
   }
 
   getDurationStyle(): string {

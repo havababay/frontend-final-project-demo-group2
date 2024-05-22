@@ -1,76 +1,49 @@
 import { Injectable } from '@angular/core';
 import { Person } from '../shared/model/person';
+import { DocumentSnapshot, Firestore, QuerySnapshot, addDoc, collection, getDocs } from '@angular/fire/firestore';
+import { personConverter } from './converters/person-converter';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PeronsService {
-  private readonly NEXT_ID_KEY = "nextId";
-  private readonly PERSON_KEY = "persons";
+  constructor(private firestoreService : Firestore) { }
 
-  constructor() { }
+  async list() : Promise<Person[]> {
+    const personCollection = collection(this.firestoreService, "people").withConverter(personConverter)
 
-  private getNextId() : number {
-    const nextIdString = localStorage.getItem(this.NEXT_ID_KEY);
+    const querySnapshot : QuerySnapshot<Person> = 
+      await getDocs(personCollection);
 
-    return nextIdString ? parseInt(nextIdString) : 0;
+    const result : Person[] = []
+
+    querySnapshot.docs.forEach(
+      (doc : DocumentSnapshot<Person>) =>
+        {
+          if (doc.data()) {
+            result.push(doc.data()!)
+          }
+        }
+    );
+
+    return result;
   }
 
-  private setNextId(id : number) {
-    localStorage.setItem(this.NEXT_ID_KEY, id.toString());
+  get(id : string) : Person | undefined {
+    return undefined;
   }
 
-  private setPersons(allPersons : Map<number, Person>) {
-    localStorage.setItem(this.PERSON_KEY,
-      JSON.stringify(Array.from(allPersons.values())));
-  }
+  async add(newPersonData:Person) {
+    const personCollection = collection(this.firestoreService, "people").withConverter(personConverter)
 
-  private getPersons() : Map<number, Person> {
-    const personString = localStorage.getItem(this.PERSON_KEY);
-    const idToPerson = new Map<number, Person>();
-
-    if (personString) {
-      JSON.parse(personString).forEach((person : Person) => {
-        Object.setPrototypeOf(person, Person.prototype)
-        idToPerson.set(person.id, person);
-      });
-    }
-
-    return idToPerson;
-  }
-
-  list() : Person[] {
-    return Array.from(this.getPersons().values());
-  }
-
-  get(id : number) : Person | undefined {
-    return this.getPersons().get(id);
-  }
-
-  add(newPersonData:Person) {
-    let nextId = this.getNextId();
-    newPersonData.id = nextId
-
-    const personsData = this.getPersons();
-    personsData.set(nextId, newPersonData);
-    this.setPersons(personsData);
-
-    this.setNextId(++nextId);
+    return await addDoc(personCollection, newPersonData)
   }
  
   update(existingPerson : Person) : void {
-    const personsData = this.getPersons();
-
-    if (personsData.has(existingPerson.id)) {
-      personsData.set(existingPerson.id, existingPerson);
-      this.setPersons(personsData);
-    }
+    
   }
 
-  delete(existingPersonId : number) : void {
-    const personsData = this.getPersons();
-
-    personsData.delete(existingPersonId);
-    this.setPersons(personsData);
+  delete(existingPersonId : string) : void {
+    
   }
 }
