@@ -10,6 +10,8 @@ import { Router } from '@angular/router';
 import { PhoneNumber } from '../shared/model/phone-number';
 import { PhoneType } from '../shared/model/phone-type';
 import { MatIconModule } from '@angular/material/icon';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @Component({
   selector: 'app-person-form',
@@ -20,7 +22,10 @@ import { MatIconModule } from '@angular/material/icon';
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
-    MatIconModule
+    MatIconModule,
+    MatDatepickerModule,
+    MatNativeDateModule
+
   ],
   templateUrl: './person-form.component.html',
   styleUrl: './person-form.component.css',
@@ -37,19 +42,22 @@ export class PersonFormComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.id) {
-      const personFromService = this.personService.get(this.id);
-
-      if (personFromService) {
-        this.currentPerson = personFromService;
-      }
+      this.personService.get(this.id).then((personFromService) => {
+        if (personFromService) {
+          this.currentPerson = personFromService;
+        }
+      });
     }
   }
 
   onSubmitRegistration() {
     console.log("Form submitted!");
     if (this.id) {
-      this.personService.update(this.currentPerson);
-      this.router.navigate(['']);
+      this.personService.update(this.currentPerson).then(
+        () => {
+          this.router.navigate(['']);
+        }
+      )
     } else {
       this.personService.add(this.currentPerson).then(
         () => this.router.navigate([''])

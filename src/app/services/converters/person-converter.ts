@@ -1,6 +1,7 @@
 import {
   QueryDocumentSnapshot,
   SnapshotOptions,
+  Timestamp,
 } from '@angular/fire/firestore';
 import { Person } from '../../shared/model/person';
 import { PhoneNumber } from '../../shared/model/phone-number';
@@ -24,6 +25,7 @@ export const personConverter = {
       age: person.age,
       email: person.email,
       phones: simplePhones,
+      birthday: person.birthday ? Timestamp.fromDate(person.birthday) : Timestamp.fromDate(new Date())
     };
   },
   fromFirestore: (
@@ -50,6 +52,10 @@ export const personConverter = {
       }
 
       personObj.phones = phonesObj;
+    }
+
+    if (simplePerson['birthday']) {
+      personObj.birthday = simplePerson['birthday'].toDate();
     }
 
     return personObj;

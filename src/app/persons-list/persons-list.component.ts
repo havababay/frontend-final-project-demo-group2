@@ -37,10 +37,11 @@ export class PersonsListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(deletionResult => {
         if (deletionResult) {
-          this.personService.delete(id);
-          this.personService.list().then(
-            (result : Person[]) => this.allPersons = result
-          );
+          this.personService.delete(id).then(()=>{
+            this.personService.list().then(
+              (result : Person[]) => this.allPersons = result
+            );
+          })
         }
       }
     );
